@@ -43,7 +43,7 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            cursor: pointer; /* Para makita ng browser na pwede i-click */
+            cursor: pointer;
         }
 
         body::before {
@@ -112,19 +112,48 @@
             font-weight: 700;
         }
 
+        /* HERO SECTION WITH LOCAL VIDEO BACKGROUND */
         #hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
             position: relative;
             padding-top: 80px;
-            background: 
-                linear-gradient(#f8f8f8a1,#f8f8f8a1),
-                url('https://freightwaves.b-cdn.net/wp-content/uploads/2025/12/04/Prasco-12.4.png?width=1999&height=1125');
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            overflow: hidden;
+        }
+
+        /* Video Background Container */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay for better text readability */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(241, 236, 236, 0.7);
+            z-index: -1;
         }
 
         #about {
@@ -135,8 +164,36 @@
             background-color: var(--primary);
         }
 
+        /* ============ FIXED SERVICES SECTION ============ */
         #services {
-            background-color: var(--secondary);
+            position: relative;
+            padding: 100px 0;
+            min-height: 700px;
+            z-index: 1;
+        }
+
+        /* Parallax Background - SIMPLE & WORKING VERSION */
+        #services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(248, 248, 248, 0.85), rgba(248, 248, 248, 0.85)),
+                url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-attachment: fixed !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-size: cover !important;
+            z-index: -1;
+        }
+
+        /* Content wrapper for services */
+        .services-content {
+            position: relative;
+            z-index: 2;
         }
 
         #logo-design {
@@ -177,6 +234,10 @@
             section {
                 padding: 60px 0;
             }
+            
+            #services::before {
+                background-attachment: scroll !important;
+            }
         }
 
         /* NAVIGATION BAR ENHANCEMENTS */
@@ -186,6 +247,7 @@
             padding: 1rem 0;
             transition: var(--transition);
             border-bottom: 1px solid rgba(114, 12, 12, 0.1);
+            z-index: 1000;
         }
 
         .navbar.scrolled {
@@ -319,7 +381,7 @@
             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28114, 12, 12, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
-        /* MUSIC CONTROL BUTTON - BOTTOM RIGHT CORNER */
+        /* MUSIC CONTROL BUTTON */
         .music-control {
             position: fixed;
             bottom: 20px;
@@ -452,7 +514,7 @@
 
         /* Cards */
         .card-custom {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: var(--border-radius);
             border: 1px solid rgba(114, 12, 12, 0.1);
             transition: var(--transition);
@@ -802,10 +864,6 @@
                 padding: 1.5rem;
             }
             
-            #hero {
-                background-attachment: scroll;
-            }
-            
             .music-control {
                 width: 50px;
                 height: 50px;
@@ -877,8 +935,19 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Local Video Background -->
     <section id="hero">
+        <!-- Local Video Background -->
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="video/truckshow.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <!-- Overlay for better text readability -->
+        <div class="video-overlay"></div>
+        
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center fade-in">
@@ -1000,13 +1069,13 @@
         </div>
     </section>
 
-    <!-- Services Section -->
+    <!-- ============ FIXED SERVICES SECTION ============ -->
     <section id="services">
-        <div class="container">
+        <div class="container services-content">
             <div class="row mb-5">
                 <div class="col-12 text-center">
-                    <h2>Our Services</h2>
-                    <p class="lead">Comprehensive logistics solutions</p>
+                    <h2 style="color: #720c0c !important;">Our Services</h2>
+                    <p class="lead" style="color: #333 !important;">Comprehensive logistics solutions</p>
                 </div>
             </div>
             
@@ -1385,9 +1454,8 @@
         <strong>Background Music:</strong> <span id="musicStatus">Playing</span>
     </div>
 
-    <!-- HIDDEN AUDIO ELEMENT - MAS SIMPLE NA VERSION -->
+    <!-- HIDDEN AUDIO ELEMENT -->
     <audio id="backgroundMusic" loop autoplay>
-
         <source src="music/music.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -1439,7 +1507,7 @@
             }
         }
         
-        // MAIN AUTOPLAY FUNCTION - GUMAGANA KAPAG MAY USER INTERACTION
+        // MAIN AUTOPLAY FUNCTION
         function startAudioOnUserInteraction() {
             if (audioStarted) return;
             
@@ -1525,6 +1593,25 @@
             setTimeout(() => {
                 showMusicNotification('Welcome to ShadowTrans');
             }, 1500);
+            
+            // Initialize video autoplay
+            const video = document.querySelector('#hero video');
+            if (video) {
+                video.muted = true;
+                video.autoplay = true;
+                video.loop = true;
+                video.playsInline = true;
+                
+                // Force play the video
+                video.play().catch(function(error) {
+                    console.log("Video autoplay failed:", error);
+                    // Add click event to start video on user interaction
+                    document.addEventListener('click', function startVideo() {
+                        video.play();
+                        document.removeEventListener('click', startVideo);
+                    });
+                });
+            }
         });
         
         // NAVIGATION EFFECTS
@@ -1667,41 +1754,6 @@
                 contactForm.reset();
             }, 100);
         });
-        
-        // Keyboard shortcuts for music control
-        document.addEventListener('keydown', (e) => {
-            // Alt + M toggles music
-            if (e.altKey && e.key === 'm') {
-                toggleMusic();
-                e.preventDefault();
-            }
-            // Alt + Up increases volume
-            else if (e.altKey && e.key === 'ArrowUp') {
-                if (backgroundAudio.volume < 1) {
-                    backgroundAudio.volume = Math.min(1, backgroundAudio.volume + 0.1);
-                    showMusicNotification(`Volume: ${Math.round(backgroundAudio.volume * 100)}%`);
-                }
-                e.preventDefault();
-            }
-            // Alt + Down decreases volume
-            else if (e.altKey && e.key === 'ArrowDown') {
-                if (backgroundAudio.volume > 0) {
-                    backgroundAudio.volume = Math.max(0, backgroundAudio.volume - 0.1);
-                    showMusicNotification(`Volume: ${Math.round(backgroundAudio.volume * 100)}%`);
-                }
-                e.preventDefault();
-            }
-        });
-        
-        // Auto-retry music if it stops
-        setInterval(() => {
-            if (backgroundAudio.paused && isPlaying) {
-                console.log("Music stopped, retrying...");
-                backgroundAudio.play().catch(e => {
-                    console.log("Retry failed");
-                });
-            }
-        }, 10000);
     </script>
 </body>
 </html>
